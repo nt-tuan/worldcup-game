@@ -1,14 +1,19 @@
 import "./App.css";
 
-import { Container, Flex, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { SwitchToggle, colorSchemeEnum } from "./components/SwitchToggle";
+import { colorSchemeEnum } from "./components/SwitchToggle";
 
 import Home from "./pages/home";
 import { useState } from "react";
 
+import { MsalProvider } from "@azure/msal-react";
+
+// MSAL imports
+import { msalInstance } from "./utils/msal";
+
 function App() {
-  const [colorScheme, setColorScheme] = useState(colorSchemeEnum.LIGHT);
+  const [colorScheme, setColorScheme] = useState(colorSchemeEnum.DARK);
 
   const theme = {
     colorScheme: colorScheme,
@@ -26,17 +31,11 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-        <Container>
-          <Flex gap="sm" justify="flex-end" align="center">
-            <SwitchToggle
-              colorScheme={colorScheme}
-              toggleColorScheme={setColorScheme}
-            />
-          </Flex>
+      <MsalProvider instance={msalInstance}>
+        <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
           <Home />
-        </Container>
-      </MantineProvider>
+        </MantineProvider>
+      </MsalProvider>
     </QueryClientProvider>
   );
 }

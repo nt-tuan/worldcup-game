@@ -9,14 +9,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.31.0",
+    "@azure/msal-react": "^1.4.10",
     "@emotion/react": "^11.10.5",
     "@mantine/core": "^5.8.2",
     "@mantine/hooks": "^5.8.2",
     "@mantine/notifications": "^5.8.2",
     "@tabler/icons": "^1.112.0",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-query": "^3.39.2"
+    "react-query": "^3.39.2",
+    "sass": "^1.56.1",
+    "scss": "^0.2.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",

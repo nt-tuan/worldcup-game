@@ -1,15 +1,36 @@
-const reuseFetch = (method, api, payload) => {
-  const token = "";
+import { checkAuth, getToken as _getToken } from "../components/useAuth";
+import { msalInstance } from "./msal";
+
+const getToken = async () => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() + 10);
+  if (checkAuth(now)) {
+    return _getToken();
+  }
+  // window.location.reload();
+  return "";
+};
+
+const reuseFetch = async (method, api, payload) => {
+  const tokenResponse = await getToken();
+
   const options = {
     method: method,
     headers: {
-      authorization: token,
+      Authorization: tokenResponse,
     },
   };
+
   if (method === "POST") {
     options.body = JSON.stringify(payload);
   }
-  return fetch(api, options).then((res) => res.json());
+  const res = await fetch(`${import.meta.env.VITE_API}${api}`, options);
+  if (res.status === 201) return;
+  if (res.status === 401) {
+    window.location.reload();
+    return;
+  }
+  return res.json();
 };
 
 const getAPI = (...arg) => reuseFetch("GET", ...arg);

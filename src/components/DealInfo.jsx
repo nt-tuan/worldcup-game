@@ -1,4 +1,4 @@
-import { AspectRatio, Badge, Card, Text, Title } from "@mantine/core";
+import { AspectRatio, Badge, Card, Text, Title, Box } from "@mantine/core";
 
 import { formatDate } from "../utils/format";
 
@@ -26,29 +26,45 @@ const DealInfo = ({ data }) => {
     <Card
       withBorder
       radius="md"
-      p="md"
+      p="0"
       component="a"
       sx={(theme) => ({
+        position: "relative",
         backgroundColor:
           theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       })}
     >
-      <AspectRatio ratio={1920 / 1080}>
-        <div>frame</div>
+      <AspectRatio ratio={1920 / 1080} style={{ overflow: "hidden" }}>
+        <img
+          width="100%"
+          height="100%"
+          src={data?.infoSource}
+          style={{ opacity: 0.4 }}
+        />
       </AspectRatio>
-      <Status status={data?.status} />
-      <Text color="dimmed" size="xs" weight={700} mt="xs">
-        Start: {formatDate(data?.startDate) || "-"} - End:{" "}
-        {formatDate(data?.closeDate) || "-"}
-      </Text>
-
-      <Title
-        variant="gradient"
-        gradient={{ from: "indigo", to: "cyan", deg: 45 }}
-        order={3}
+      <Box
+        p="md"
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: "#212529aa",
+        }}
       >
-        {data?.title}
-      </Title>
+        <Status status={data?.status} />
+        <Text color="gray.1" size="xs" weight={700} mt="xs">
+          Start: {formatDate(data?.startDate) || "-"} - End:{" "}
+          {formatDate(data?.closeDate) || "-"}
+        </Text>
+        <Title
+          variant="gradient"
+          gradient={{ from: "indigo.1", to: "cyan.1", deg: 45 }}
+          order={3}
+        >
+          {data?.title}
+        </Title>
+      </Box>
     </Card>
   );
 };
