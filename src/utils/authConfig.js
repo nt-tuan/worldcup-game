@@ -17,8 +17,8 @@ export const msalConfig = {
     clientId: "324e96b9-8656-4c3b-b3d0-9d777d04e485",
     authority:
       "https://login.microsoftonline.com/b035d9fd-a388-48f2-9abf-cea8457262ce",
-    redirectUri: "http://localhost:5173/",
-    postLogoutRedirectUri: "http://localhost:5173/",
+    redirectUri: "/",
+    postLogoutRedirectUri: "/",
   },
   cache: {
     cacheLocation: "localStorage",
