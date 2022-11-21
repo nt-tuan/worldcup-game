@@ -81,6 +81,7 @@ function HomeContent() {
 
 function Home() {
   const { isLoggedIn, logout } = useAuth();
+
   if (!isLoggedIn())
     return (
       <Flex h={500} align="center" justify="center" justifyContent="center">

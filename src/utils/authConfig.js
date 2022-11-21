@@ -18,7 +18,7 @@ export const msalConfig = {
     authority:
       "https://login.microsoftonline.com/b035d9fd-a388-48f2-9abf-cea8457262ce",
     redirectUri: "/",
-    postLogoutRedirectUri: "/",
+    postLogoutRedirectUri: "/logout",
   },
   cache: {
     cacheLocation: "localStorage",

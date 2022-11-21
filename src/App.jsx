@@ -7,10 +7,24 @@ import { colorSchemeEnum } from "./components/SwitchToggle";
 import Home from "./pages/home";
 import { useState } from "react";
 
-import { MsalProvider } from "@azure/msal-react";
+import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
 
 // MSAL imports
 import { msalInstance } from "./utils/msal";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Logout } from "./pages/logout";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
+  },
+]);
 
 function App() {
   const [colorScheme, setColorScheme] = useState(colorSchemeEnum.DARK);
@@ -33,7 +47,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <MsalProvider instance={msalInstance}>
         <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-          <Home />
+          <RouterProvider router={router} />
         </MantineProvider>
       </MsalProvider>
     </QueryClientProvider>

@@ -1,7 +1,8 @@
-import { useMsal } from "@azure/msal-react";
+import { useMsal, useMsalAuthentication } from "@azure/msal-react";
 import request from "../utils/request";
 import decodeJwt from "jwt-decode";
 import { useMutation } from "react-query";
+import React from "react";
 
 export const login = async (token) => {
   const { accessToken } = await request.postAPI("/login", { token });
@@ -14,15 +15,24 @@ export const login = async (token) => {
 export const useLogin = () => {
   const { instance } = useMsal();
   const { mutate, isLoading } = useMutation(login);
-  const onLogin = async () => {
-    const result = await instance.loginPopup();
+  const redirect = async () => {
+    await instance.loginRedirect();
     mutate(result.idToken, {
       onSuccess: () => {
         window.location.reload();
       },
     });
   };
+  const onLogin = React.useCallback(async () => {
+    const response = await instance.acquireTokenSilent({});
+
+    if (response?.idToken) {
+      await login(response?.idToken);
+      window.location.reload();
+    }
+  }, [instance]);
   return {
+    redirect,
     onLogin,
     isLoading,
   };
@@ -43,13 +53,12 @@ export const checkAuth = (time) => {
 };
 
 export const useAuth = () => {
+  const { instance } = useMsal();
   const isLoggedIn = () => {
     return checkAuth(new Date());
   };
-  const logout = () => {
-    localStorage.setItem("token", "");
-    localStorage.setItem("token_exp", "");
-    window.location.reload();
+  const logout = async () => {
+    await instance.logoutRedirect();
   };
 
   return {
