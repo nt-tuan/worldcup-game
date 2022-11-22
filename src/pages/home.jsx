@@ -45,8 +45,16 @@ function HomeContent() {
   );
   return (
     <Container>
-      <DealInfo data={dealInfo} />
+      <BetRate bets={data} />
+      <BetOptions
+        isLoading={isLoading}
+        isUpdating={isUpdating}
+        data={dealInfo?.options}
+        onPlaceBet={mutate}
+      />
       <Space h="xl" />
+      <DealInfo data={dealInfo} />
+      <Divider my="xl" />
       {data && data.length > 0 && (
         <BetList
           data={data}
@@ -56,15 +64,6 @@ function HomeContent() {
           options={dealInfo?.options}
         />
       )}
-
-      <Divider my="xl" />
-      <BetRate bets={data} />
-      <BetOptions
-        isLoading={isLoading}
-        isUpdating={isUpdating}
-        data={dealInfo?.options}
-        onPlaceBet={mutate}
-      />
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
