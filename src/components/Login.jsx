@@ -6,15 +6,17 @@ import { useLogin } from "./useAuth";
 export const Login = () => {
   const isAuthenticated = useIsAuthenticated();
   const { onLogin, redirect } = useLogin();
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     if (isAuthenticated) {
-      onLogin();
+      setLoading(true);
+      onLogin().finally(() => setLoading(false));
     }
   }, [isAuthenticated, onLogin]);
 
   return (
-    <Button loading={isAuthenticated} onClick={redirect}>
+    <Button loading={isAuthenticated || loading} onClick={redirect}>
       Login
     </Button>
   );
