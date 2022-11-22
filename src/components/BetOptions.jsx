@@ -44,7 +44,7 @@ function BetOption({ option, index, amount, onTap, highlight, rate }) {
       >
         {option?.title}
       </Title>
-      <Text align="center">{rate ? `1 : ${rate}` : "-"}</Text>
+      <Text align="center">{rate ? `1.00 : ${rate}` : "-"}</Text>
       <Space h="sm" />
 
       <Box radius="md">
