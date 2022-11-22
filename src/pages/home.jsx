@@ -50,6 +50,7 @@ function HomeContent() {
         isLoading={isLoading}
         isUpdating={isUpdating}
         data={dealInfo?.options}
+        bets={data}
         onPlaceBet={mutate}
       />
       <Space h="xl" />

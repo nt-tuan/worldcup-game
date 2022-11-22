@@ -15,6 +15,7 @@ import {
 import React from "react";
 import { Amount } from "./Amount";
 import styles from "./BetOptions.module.scss";
+import { groupBet } from "./BetRate";
 
 const gradientMaps = {
   0: { from: "teal", to: "lime", deg: 105 },
@@ -29,7 +30,7 @@ const gradientMaps = {
   9: { from: "#ed6ea0", to: "#ec8c69", deg: 35 },
 };
 
-function BetOption({ option, index, amount, onTap, highlight }) {
+function BetOption({ option, index, amount, onTap, highlight, rate }) {
   const isActive = amount != null;
 
   return (
@@ -43,6 +44,7 @@ function BetOption({ option, index, amount, onTap, highlight }) {
       >
         {option?.title}
       </Title>
+      <Text align="center">{rate ? `1 : ${rate}` : "-"}</Text>
       <Space h="sm" />
 
       <Box radius="md">
@@ -135,7 +137,7 @@ function BetOption({ option, index, amount, onTap, highlight }) {
   );
 }
 
-function ContenBuilder({ options = [], onPlaceBet, isUpdating }) {
+function ContenBuilder({ options = [], onPlaceBet, isUpdating, bets }) {
   const [currentBet, setCurrentBet] = React.useState({
     amount: 0,
     optionId: undefined,
@@ -162,6 +164,16 @@ function ContenBuilder({ options = [], onPlaceBet, isUpdating }) {
     }
   };
 
+  const groups = groupBet(bets);
+  const getRate = (id) => {
+    const value = groups?.find((item) => item.id === id)?.value;
+    if (!value) return null;
+    const sum = groups?.reduce((s, r) => (s += r.value), 0);
+    if (!sum) return null;
+    console.log(sum, value);
+    return (1 + (sum - value) / value).toFixed(2);
+  };
+
   if (options?.length === 0) return <Title order={3}>Quay lại sau nhé!</Title>;
   return (
     <Flex direction="column">
@@ -171,6 +183,7 @@ function ContenBuilder({ options = [], onPlaceBet, isUpdating }) {
             <BetOption
               highlight={highlight}
               key={`${option.id}${index}`}
+              rate={getRate(option.id)}
               amount={
                 option.id === currentBet.optionId
                   ? currentBet.amount
@@ -208,11 +221,12 @@ function ContenBuilder({ options = [], onPlaceBet, isUpdating }) {
       <Button
         loading={isUpdating}
         variant="gradient"
+        size="xl"
         gradient={gradientMaps[selectedOptionIndex]}
         disabled={!currentBet?.amount}
         onClick={() => setConfirmedOpen(true)}
       >
-        Chốt
+        Chốt kèo liền
       </Button>
       <Space h="lg" />
       <Space h="lg" />
@@ -238,7 +252,7 @@ function ContenBuilder({ options = [], onPlaceBet, isUpdating }) {
   );
 }
 
-function BetOptions({ isLoading, data, onPlaceBet, isUpdating }) {
+function BetOptions({ isLoading, data, onPlaceBet, isUpdating, bets }) {
   return (
     <Box>
       {/* <Notification title="Default notification">
@@ -252,6 +266,7 @@ function BetOptions({ isLoading, data, onPlaceBet, isUpdating }) {
         )}
         {!isLoading && (
           <ContenBuilder
+            bets={bets}
             options={data}
             onPlaceBet={onPlaceBet}
             isUpdating={isUpdating}
