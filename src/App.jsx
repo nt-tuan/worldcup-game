@@ -17,12 +17,12 @@ import { Logout } from "./pages/logout";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
-  },
-  {
     path: "/logout",
     element: <Logout />,
+  },
+  {
+    path: "/",
+    element: <Home />,
   },
 ]);
 
