@@ -137,7 +137,7 @@ function BetOption({ option, index, amount, onTap, highlight, rate }) {
   );
 }
 
-function ContenBuilder({ options = [], onPlaceBet, isUpdating, bets }) {
+function ContenBuilder({ options = [], onPlaceBet, isUpdating, bets, active }) {
   const [currentBet, setCurrentBet] = React.useState({
     amount: 0,
     optionId: undefined,
@@ -223,7 +223,7 @@ function ContenBuilder({ options = [], onPlaceBet, isUpdating, bets }) {
         variant="gradient"
         size="xl"
         gradient={gradientMaps[selectedOptionIndex]}
-        disabled={!currentBet?.amount}
+        disabled={!currentBet?.amount || !active}
         onClick={() => setConfirmedOpen(true)}
       >
         Chốt kèo liền
@@ -252,7 +252,18 @@ function ContenBuilder({ options = [], onPlaceBet, isUpdating, bets }) {
   );
 }
 
-function BetOptions({ isLoading, data, onPlaceBet, isUpdating, bets }) {
+function BetOptions({
+  isLoading,
+  data,
+  onPlaceBet,
+  isUpdating,
+  bets,
+  closeDate,
+  status,
+}) {
+  const isActive =
+    status === "ACTIVE" &&
+    (!closeDate || new Date(closeDate).getTime() > new Date().getTime());
   return (
     <Box>
       {/* <Notification title="Default notification">
@@ -266,6 +277,7 @@ function BetOptions({ isLoading, data, onPlaceBet, isUpdating, bets }) {
         )}
         {!isLoading && (
           <ContenBuilder
+            active={isActive}
             bets={bets}
             options={data}
             onPlaceBet={onPlaceBet}

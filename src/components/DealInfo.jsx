@@ -2,7 +2,16 @@ import { AspectRatio, Badge, Card, Text, Title, Box } from "@mantine/core";
 
 import { formatDate } from "../utils/format";
 
-const Status = ({ status }) => {
+const Status = ({ status, closeDate }) => {
+  console.log({ closeDate });
+  if (closeDate && new Date(closeDate).getTime() < new Date().getTime()) {
+    return (
+      <Badge variant="gradient" gradient={{ from: "orange", to: "red" }}>
+        Đã đóng
+      </Badge>
+    );
+  }
+
   if (status === "ACTIVE")
     return (
       <Badge
@@ -12,6 +21,7 @@ const Status = ({ status }) => {
         Đang diễn ra
       </Badge>
     );
+
   if (status === "CANCELED")
     return (
       <Badge variant="gradient" gradient={{ from: "orange", to: "red" }}>
@@ -52,7 +62,7 @@ const DealInfo = ({ data }) => {
           backgroundColor: "#212529aa",
         }}
       >
-        <Status status={data?.status} />
+        <Status status={data?.status} closeDate={data?.closeDate} />
         <Text color="gray.1" size="xs" weight={700} mt="xs">
           Start: {formatDate(data?.startDate) || "-"} - End:{" "}
           {formatDate(data?.closeDate) || "-"}

@@ -25,7 +25,11 @@ function HomeContent() {
   const { data } = useQuery(
     ["deals", "bet"],
     async () => request.getAPI(`/deal/${dealId}/bet`),
-    { enabled: dealId != null, refetchInterval: 5 * 1000 }
+    {
+      enabled: dealId != null,
+      refetchInterval: 5 * 1000,
+      keepPreviousData: true,
+    }
   );
 
   const { mutate, isLoading: isUpdating } = useMutation(
@@ -50,6 +54,8 @@ function HomeContent() {
         isLoading={isLoading}
         isUpdating={isUpdating}
         data={dealInfo?.options}
+        closeDate={dealInfo?.closeDate}
+        status={dealInfo?.status}
         bets={data}
         onPlaceBet={mutate}
       />
