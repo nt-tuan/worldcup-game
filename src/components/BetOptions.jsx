@@ -214,6 +214,9 @@ function ContenBuilder({ options = [], onPlaceBet, isUpdating }) {
       >
         Chốt
       </Button>
+      <Space h="lg" />
+      <Space h="lg" />
+      <Space h="lg" />
       <Modal opened={confirmedOpen} withCloseButton={false}>
         <Text
           variant="gradient"
