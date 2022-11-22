@@ -39,7 +39,7 @@ export const groupBet = (bets) => {
 
 export const BetRate = ({ bets }) => {
   const sections = React.useMemo(() => {
-    groupBet(bets);
+    return groupBet(bets);
   }, [bets]);
 
   if (bets == null || bets.length === 0) return null;
