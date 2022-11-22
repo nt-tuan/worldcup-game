@@ -58,6 +58,8 @@ export const useAuth = () => {
     return checkAuth(new Date());
   };
   const logout = async () => {
+    localStorage.setItem("token", "");
+    localStorage.setItem("token_exp", "");
     await instance.logoutRedirect();
   };
 
