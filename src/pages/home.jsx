@@ -44,7 +44,7 @@ function HomeContent() {
     }
   );
   return (
-    <Container>
+    <Container maw={600}>
       <BetRate bets={data} />
       <BetOptions
         isLoading={isLoading}
